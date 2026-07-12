@@ -1,0 +1,37 @@
+{
+  "name": "cfb27-coaching-carousel-editor",
+  "version": "0.1.0",
+  "description": "Desktop editor for College Football 27 Coaching Carousel job offers.",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "community.cfb27.coaching-carousel-editor",
+    "productName": "CFB27 Coaching Carousel Editor",
+    "asar": true,
+    "files": [
+      "src/**/*",
+      "Resources/**/*",
+      "assets/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "icon": "assets/icon.png"
+    }
+  },
+  "dependencies": {
+    "lucide-static": "^1.23.0",
+    "madden-franchise": "^4.3.0"
+  },
+  "devDependencies": {
+    "electron": "^43.0.0",
+    "electron-builder": "^26.15.3"
+  }
+}

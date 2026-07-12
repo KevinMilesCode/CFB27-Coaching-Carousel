@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' file:; img-src 'self' file: data:; style-src 'self'; script-src 'self';"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CFB27 Coaching Carousel Editor</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <section id="loaderView" class="loader-view">
+      <form id="loadForm" class="load-panel">
+        <div class="app-mark">
+          <span class="mark-block mark-green"></span>
+          <span class="mark-block mark-red"></span>
+          <span class="mark-block mark-blue"></span>
+        </div>
+        <h1>CFB27 Coaching Carousel Editor</h1>
+        <label class="field-label" for="dynastySelect">Select Dynasty</label>
+        <div class="load-row load-row--stacked">
+          <select id="dynastySelect" name="dynastySelect">
+            <option value="">-- Select a dynasty file --</option>
+          </select>
+        </div>
+        <div class="load-row">
+          <button class="primary-button" type="submit">
+            <img src="../../node_modules/lucide-static/icons/folder-open.svg" alt="" />
+            Load
+          </button>
+        </div>
+        <div class="load-row load-row--stacked">
+          <button id="changeDirectory" class="secondary-button" type="button">
+            <img src="../../node_modules/lucide-static/icons/folder.svg" alt="" />
+            Change Save Directory
+          </button>
+        </div>
+        <p id="saveDirectory" class="path-text"></p>
+        <p id="loadMessage" class="message-text" role="status"></p>
+      </form>
+    </section>
+
+    <section id="appView" class="app-view hidden">
+      <header class="topbar">
+        <div class="title-block">
+          <div class="title-line">CFB27 Coaching Carousel Editor</div>
+          <div id="filePath" class="file-line"></div>
+        </div>
+        <div class="topbar-actions">
+          <div id="dirtyBadge" class="dirty-badge hidden">Unsaved</div>
+          <button id="themeToggle" class="icon-button" type="button" title="Toggle Theme" aria-label="Toggle Theme">
+            <img id="themeIcon" src="../../node_modules/lucide-static/icons/moon.svg" alt="" />
+          </button>
+          <button id="saveButton" class="primary-button" type="button">
+            <img src="../../node_modules/lucide-static/icons/save.svg" alt="" />
+            Save
+          </button>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <aside id="filterPanel" class="filter-panel"></aside>
+        <main class="table-region">
+          <div class="table-toolbar">
+            <div id="resultCount" class="result-count"></div>
+            <div id="statusMessage" class="status-message" role="status"></div>
+          </div>
+          <div id="candidateGrid" class="candidate-grid"></div>
+        </main>
+      </div>
+    </section>
+
+    <dialog id="coachDialog" class="coach-dialog"></dialog>
+    <script type="module" src="./renderer.js"></script>
+  </body>
+</html>
