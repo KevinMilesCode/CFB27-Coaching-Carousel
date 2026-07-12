@@ -301,46 +301,6 @@ body.dark-mode .dirty-badge {
   text-transform: uppercase;
 }
 
-.filter-stat-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.filter-stat {
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
-  padding: 10px;
-}
-
-.filter-stat-value {
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.filter-stat-label {
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.backup-box,
-.helper-box {
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
-  padding: 10px;
-  color: var(--muted);
-  font-size: 12px;
-  overflow-wrap: anywhere;
-}
-
-.helper-box {
-  line-height: 1.45;
-}
-
 .table-region {
   display: grid;
   grid-template-rows: 52px 1fr;
@@ -420,7 +380,6 @@ tbody tr:hover {
   text-align: center;
 }
 
-.coach-cell,
 .team-cell {
   display: grid;
   grid-template-columns: 34px minmax(0, 1fr);
@@ -454,18 +413,6 @@ tbody tr:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.position-pill {
-  display: inline-flex;
-  min-width: 42px;
-  height: 26px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  background: var(--soft-green);
-  color: var(--accent-strong);
-  font-weight: 900;
 }
 
 .coach-name-row {
@@ -516,19 +463,6 @@ body.dark-mode .opening-reason-pill--retired {
 body.dark-mode .opening-reason-pill--pro {
   background: #1a2d3d;
   color: #6a9fd4;
-}
-
-.opening-reason {
-  display: inline-flex;
-  margin-top: 4px;
-  color: var(--accent-strong);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.opening-reason--compact {
-  min-height: 36px;
-  align-items: center;
 }
 
 .group-row {

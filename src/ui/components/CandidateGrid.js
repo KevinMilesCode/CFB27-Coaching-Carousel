@@ -5,7 +5,6 @@ const SORTERS = {
   baseInterest: (candidate) => candidate.baseInterest,
   coachName: (candidate) => candidate.coachName,
   currentTeamName: (candidate) => candidate.currentTeamName,
-  positionLabel: (candidate) => candidate.positionLabel,
   rank: (candidate) => candidate.rank,
   teamInterest: (candidate) => candidate.teamInterest,
   teamPrestige: (candidate) => candidate.teamPrestige || 0
@@ -117,16 +116,6 @@ function renderCandidateRow(candidate, groupCounts) {
   const groupCount = groupCounts.get(candidate.groupKey) || 1;
   const isFirst = candidate.rank <= 1;
   const isLast = candidate.rank >= groupCount;
-  const contractStatus = candidate.coachContractStatus && candidate.coachContractStatus !== 'Unknown'
-    ? candidate.coachContractStatus
-    : '';
-  const normalizedContractStatus = String(contractStatus || '').trim().toLowerCase();
-  const coachStatusParts = [
-    candidate.coachPosition,
-    normalizedContractStatus && normalizedContractStatus !== 'pending' ? contractStatus : '',
-    `${candidate.coachJobSecurity} ${candidate.coachJobSecurityPercentage}%`
-  ].filter(Boolean);
-  const coachSub = coachStatusParts.join(' • ');
   const firedBadge = candidate.coachPreviousFired
     ? '<span class="opening-reason-pill opening-reason-pill--fired">Fired</span>'
     : '';
@@ -135,34 +124,12 @@ function renderCandidateRow(candidate, groupCounts) {
     <tr data-row="${escapeHtml(candidate.rowIndex)}">
       <td class="rank-cell">${escapeHtml(candidate.rank)}</td>
       <td>
-        <div class="coach-cell">
-          <img class="team-logo" src="${escapeHtml(candidate.currentTeamLogoUrl)}" alt="" />
-          <div>
-            <div class="coach-name-row">
-              <div class="cell-main">${escapeHtml(candidate.coachName)}</div>
-              ${firedBadge}
-            </div>
-          </div>
+        <div class="coach-name-row">
+          <div class="cell-main">${escapeHtml(candidate.coachName)}</div>
+          ${firedBadge}
         </div>
       </td>
-      <td>${escapeHtml(candidate.currentTeamName)}</td>
-      <td><span class="position-pill">${escapeHtml(candidate.positionLabel)}</span></td>
-      <td><span class="opening-reason opening-reason--compact">${escapeHtml(candidate.openingReason)}</span></td>
-      <td>
-        <input class="interest-input" type="number" min="0" max="280" value="${escapeHtml(
-          candidate.baseInterest
-        )}" data-field="baseInterest" data-row="${escapeHtml(candidate.rowIndex)}" />
-      </td>
-      <td>
-        <input class="interest-input" type="number" min="0" max="100" value="${escapeHtml(
-          candidate.adjustedInterest
-        )}" data-field="adjustedInterest" data-row="${escapeHtml(candidate.rowIndex)}" />
-      </td>
-      <td>
-        <input class="interest-input" type="number" min="0" max="100" value="${escapeHtml(
-          candidate.teamInterest
-        )}" data-field="teamInterest" data-row="${escapeHtml(candidate.rowIndex)}" />
-      </td>
+      <td>${renderTeamCell(candidate.currentTeamLogoUrl, candidate.currentTeamName)}</td>
       <td>
         <div class="row-actions">
           <button class="icon-button" type="button" title="Move Up" aria-label="Move Up" data-action="move-up" data-row="${escapeHtml(
@@ -180,6 +147,21 @@ function renderCandidateRow(candidate, groupCounts) {
             Replace
           </button>
         </div>
+      </td>
+      <td>
+        <input class="interest-input" type="number" min="0" max="280" value="${escapeHtml(
+          candidate.baseInterest
+        )}" data-field="baseInterest" data-row="${escapeHtml(candidate.rowIndex)}" />
+      </td>
+      <td>
+        <input class="interest-input" type="number" min="0" max="100" value="${escapeHtml(
+          candidate.adjustedInterest
+        )}" data-field="adjustedInterest" data-row="${escapeHtml(candidate.rowIndex)}" />
+      </td>
+      <td>
+        <input class="interest-input" type="number" min="0" max="100" value="${escapeHtml(
+          candidate.teamInterest
+        )}" data-field="teamInterest" data-row="${escapeHtml(candidate.rowIndex)}" />
       </td>
     </tr>
   `;
@@ -244,26 +226,22 @@ export function renderCandidateGrid(container, candidates, sort, handlers) {
     <table>
       <colgroup>
         <col style="width: 58px" />
-        <col style="width: 230px" />
-        <col style="width: 180px" />
-        <col style="width: 86px" />
-        <col style="width: 150px" />
+        <col style="width: 210px" />
+        <col style="width: 200px" />
+        <col style="width: 188px" />
         <col style="width: 108px" />
         <col style="width: 112px" />
         <col style="width: 112px" />
-        <col style="width: 188px" />
       </colgroup>
       <thead>
         <tr>
           <th class="sortable" data-sort="rank">${renderSortLabel('Rank', 'rank', sort)}</th>
           <th class="sortable" data-sort="coachName">${renderSortLabel('Coach Name', 'coachName', sort)}</th>
           <th class="sortable" data-sort="currentTeamName">${renderSortLabel('Current Team', 'currentTeamName', sort)}</th>
-          <th class="sortable" data-sort="positionLabel">${renderSortLabel('Position', 'positionLabel', sort)}</th>
-          <th>Opening Reason</th>
+          <th>Actions</th>
           <th class="sortable" data-sort="baseInterest">${renderSortLabel('Coach Interest (Base)', 'baseInterest', sort)}</th>
           <th class="sortable" data-sort="adjustedInterest">${renderSortLabel('Coach Interest (Adjusted)', 'adjustedInterest', sort)}</th>
           <th class="sortable" data-sort="teamInterest">${renderSortLabel('Team Interest', 'teamInterest', sort)}</th>
-          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -276,7 +254,7 @@ export function renderCandidateGrid(container, candidates, sort, handlers) {
                 : `<span class="group-row-meta">${escapeHtml(entry.candidate.conference || '')}</span>`;
               return `
                 <tr class="group-row">
-                  <td colspan="9">
+                  <td colspan="7">
                     <div class="group-row-content">
                       <img class="team-logo group-row-logo" src="${escapeHtml(entry.candidate.hiringTeamLogoUrl)}" alt="" />
                       <span class="group-row-title">${escapeHtml(entry.candidate.hiringTeamName)}</span>
@@ -289,11 +267,17 @@ export function renderCandidateGrid(container, candidates, sort, handlers) {
             }
 
             if (entry.type === 'position-group') {
+              const reasonKey = entry.candidate.openingReasonKey || '';
+              const reasonLabel = entry.candidate.openingReason || entry.candidate.openingReasonLabel || '';
+              const reasonPillClass = ['fired', 'retired', 'pro'].includes(reasonKey)
+                ? ` opening-reason-pill--${reasonKey}`
+                : '';
               return `
                 <tr class="subgroup-row">
-                  <td colspan="9">
+                  <td colspan="7">
                     <div class="subgroup-row-content">
                       <span class="subgroup-row-title">${escapeHtml(entry.label)}</span>
+                      ${reasonLabel ? `<span class="opening-reason-pill${reasonPillClass}">${escapeHtml(reasonLabel)}</span>` : ''}
                     </div>
                   </td>
                 </tr>

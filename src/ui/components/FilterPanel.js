@@ -3,6 +3,11 @@ import { escapeHtml, icon, setOptions } from './uiUtils.js';
 export function renderFilterPanel(container, state, handlers) {
   const { data, filters } = state;
 
+  const previousSearchInput = container.querySelector('#candidateSearch');
+  const searchHadFocus = document.activeElement === previousSearchInput;
+  const searchSelectionStart = previousSearchInput?.selectionStart ?? null;
+  const searchSelectionEnd = previousSearchInput?.selectionEnd ?? null;
+
   container.innerHTML = `
     <div class="filter-group">
       <div class="filter-title">Coach Search</div>
@@ -30,30 +35,6 @@ export function renderFilterPanel(container, state, handlers) {
     </div>
 
     <div class="filter-group">
-      <div class="filter-title">Focus</div>
-      <div class="helper-box">Choose a school to focus on one opening, or use the search box to find a coach across all jobs.</div>
-    </div>
-
-    <div class="filter-group">
-      <div class="filter-title">File</div>
-      <div class="backup-box">${escapeHtml(data.backupPath || '')}</div>
-    </div>
-
-    <div class="filter-group">
-      <div class="filter-title">Loaded</div>
-      <div class="filter-stat-grid">
-        <div class="filter-stat">
-          <div class="filter-stat-value">${escapeHtml(data.stats.pendingOffers)}</div>
-          <div class="filter-stat-label">Offers</div>
-        </div>
-        <div class="filter-stat">
-          <div class="filter-stat-value">${escapeHtml(data.stats.groups)}</div>
-          <div class="filter-stat-label">Lists</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="filter-group">
       <button id="clearFilters" class="secondary-button" type="button">
         <img src="${icon('x')}" alt="" />
         Clear
@@ -71,6 +52,13 @@ export function renderFilterPanel(container, state, handlers) {
   setOptions(positionFilter, data.filters.positions, filters.position, 'All Positions');
   setOptions(conferenceFilter, data.filters.conferences, filters.conference, 'All Conferences');
   setOptions(prestigeFilter, data.filters.prestiges, filters.prestige, 'All Prestiges');
+
+  if (searchHadFocus) {
+    candidateSearch.focus();
+    if (searchSelectionStart !== null && searchSelectionEnd !== null) {
+      candidateSearch.setSelectionRange(searchSelectionStart, searchSelectionEnd);
+    }
+  }
 
   let searchTimer = null;
   candidateSearch.addEventListener('input', (event) => {
