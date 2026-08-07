@@ -47,6 +47,18 @@ A desktop application for editing College Football 27 dynasty coaching carousel 
 - The save directory is automatically detected from your CFB27 installation
 - Conference logos will display if available in the Resources/conferences directory
 
+## Game updates and save compatibility
+
+The tool reads the schema version your save declares in its own header and picks
+the matching bundled schema, so the same build works on saves from before and
+after a game update. Both the pre-2026-08-06 layout and the patched layout ship
+with it, because that patch changed the coach table in a way that is not
+backward or forward compatible.
+
+If a future update ships a layout none of the bundled schemas cover, coach names
+and teams read as blank or the tool reports a missing field. That means a new
+schema is needed, not that your save is damaged.
+
 ## Troubleshooting
 
 **Dynasty not found:**
